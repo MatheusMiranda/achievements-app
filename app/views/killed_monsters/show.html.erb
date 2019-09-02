@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @killed_monster.user %>
+</p>
+
+<p>
+  <strong>Monster:</strong>
+  <%= @killed_monster.monster %>
+</p>
+
+<%= link_to 'Edit', edit_killed_monster_path(@killed_monster) %> |
+<%= link_to 'Back', killed_monsters_path %>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Killed Monsters</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Monster</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @killed_monsters.each do |killed_monster| %>
+      <tr>
+        <td><%= killed_monster.user %></td>
+        <td><%= killed_monster.monster %></td>
+        <td><%= link_to 'Show', killed_monster %></td>
+        <td><%= link_to 'Edit', edit_killed_monster_path(killed_monster) %></td>
+        <td><%= link_to 'Destroy', killed_monster, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Killed Monster', new_killed_monster_path %>

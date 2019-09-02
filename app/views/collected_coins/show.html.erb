@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @collected_coin.value %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @collected_coin.user %>
+</p>
+
+<%= link_to 'Edit', edit_collected_coin_path(@collected_coin) %> |
+<%= link_to 'Back', collected_coins_path %>
