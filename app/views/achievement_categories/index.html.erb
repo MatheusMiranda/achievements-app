@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Achievement Categories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Level</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @achievement_categories.each do |achievement_category| %>
+      <tr>
+        <td><%= achievement_category.type %></td>
+        <td><%= achievement_category.level %></td>
+        <td><%= link_to 'Show', achievement_category %></td>
+        <td><%= link_to 'Edit', edit_achievement_category_path(achievement_category) %></td>
+        <td><%= link_to 'Destroy', achievement_category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Achievement Category', new_achievement_category_path %>

@@ -1,5 +1,5 @@
-class Achievement
+class AchievementCategory
   include Mongoid::Document
-  belongs_to :user
   field :name, type: String
+  field :level, type: Integer
 end

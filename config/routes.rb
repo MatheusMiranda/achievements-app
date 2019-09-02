@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :achievement_categories
+  root 'welcome#index'
+
   resources :killed_monsters
   resources :monsters
 
