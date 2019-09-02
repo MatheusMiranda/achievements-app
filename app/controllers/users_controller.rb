@@ -51,6 +51,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_collected_coins
+    @collected_coin = CollectedCoins.create(user_id: @user.id)
+  end
+
+  def update_killed_monsters
+    @killed_monster = KilledMonster.create(user_id: @user.id)
+  end
+
+  def update_deaths
+    @death = Death.create(user_id: @user.id)
+  end
+
+  # GET /users/:id/get_achievements
+  def get_achievements
+    @user.achievements
+  end
+
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
@@ -69,6 +86,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.fetch(:user, {})
+      params.require(:user).permit(:name)
     end
 end
