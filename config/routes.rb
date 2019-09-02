@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :achievements
   resources :deaths
   resources :killed_monsters
   resources :monsters
