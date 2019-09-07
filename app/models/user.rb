@@ -5,4 +5,6 @@ class User
   has_many :killed_monsters
   has_many :deaths
   has_many :achievements
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
 end
