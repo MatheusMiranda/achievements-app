@@ -1,6 +1,11 @@
 class Death
   include Mongoid::Document
-  belongs_to :user
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
+
+  belongs_to :user
+
+  def as_indexed_json(options={})
+    as_json(except: [:id, :_id])
+  end
 end

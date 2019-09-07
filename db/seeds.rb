@@ -27,6 +27,6 @@ users = User.all
 Monster.__elasticsearch__.create_index!(force: true)
 monsters_names = ["turtle", "bowser"]
 
-(1, 1000).each do |i|
+(1..1000).each do |i|
   Monster.create(name: monsters_names[i % 2])
 end
