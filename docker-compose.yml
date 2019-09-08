@@ -1,6 +1,26 @@
 version: '2'
 
 services:
+  rails:
+    image: matheusmiranda/pokedez:latest
+    build:
+      context: .
+      dockerfile: ./docker/rails-server/Dockerfile
+    ports:
+      - 3001:3000
+    depends_on:
+      - rails-server-db
+    command: bash -c "rm -rf tmp/ && bundle exec rails s -b 0.0.0.0"
+    volumes:
+      - .:/app
+
+  mongo:
+    image: mongo:3.2
+    restart: unless-stopped
+    volumes:
+      - ./data/db:/data/db
+    command: mongod --smallfiles --oplogSize 128
+
   elasticsearch:
     build:
       context: .
