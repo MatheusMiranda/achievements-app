@@ -1,7 +1,6 @@
 ## CREATE ACHIEVEMENTS CATEGORY
 puts "CREATING ACHIEVEMENTS CATEGORIES"
-AchievementCategory.__elasticsearch__.create_index!(force: true)
-AchievementCategory.__elasticsearch__.refresh_index!
+AchievementCategory.reindex
 coins_levels = [1, 100, 1000, 10000, 100000]
 coins_levels.each do |coin_level|
   AchievementCategory.create(name: "coins", level: coin_level)
@@ -18,8 +17,7 @@ monsters_levels.each do |monster_level|
 end
 
 ### CREATE USERS
-User.__elasticsearch__.create_index!(force: true)
-User.__elasticsearch__.refresh_index!
+User.reindex
 puts "CREATING USERS"
 users_names = ["Guila", "Bruna", "Taynara","Miranda", "Joao", "Assis", "Dom", "Richard", "Kamilla", "Vitoria"]
 
@@ -32,8 +30,7 @@ end
 
 ## CREATE MONSTERS
 puts "CREATING MONSTERS"
-Monster.__elasticsearch__.create_index!(force: true)
-Monster.__elasticsearch__.refresh_index!
+Monster.reindex
 monsters_names = ["turtle", "bowser"]
 
 (1..200).each do |i|
@@ -46,8 +43,7 @@ users = User.all
 users_count = users.count
 monsters = Monster.limit(100)
 
-KilledMonster.__elasticsearch__.create_index!(force: true)
-KilledMonster.__elasticsearch__.refresh_index!
+KilledMonster.reindex
 monsters.each do |monster|
   KilledMonster.create(user: users[rand(1..users_count)], monster: monster)
 end
