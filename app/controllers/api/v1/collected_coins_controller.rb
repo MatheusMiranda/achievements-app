@@ -1,5 +1,6 @@
-class CollectedCoinsController < ApplicationController
+class Api::V1::CollectedCoinsController < ApplicationController
   before_action :set_collected_coin, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only[:create]
 
   # GET /collected_coins
   # GET /collected_coins.json
@@ -25,6 +26,7 @@ class CollectedCoinsController < ApplicationController
   # POST /collected_coins.json
   def create
     @collected_coin = CollectedCoin.new(collected_coin_params)
+    @user.update_achievements("collected_coins")
 
     respond_to do |format|
       if @collected_coin.save
@@ -70,5 +72,9 @@ class CollectedCoinsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def collected_coin_params
       params.require(:collected_coin).permit(:value, :user_id)
+    end
+    
+    def set_user
+      @user = User.find(params[:user_id])
     end
 end

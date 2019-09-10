@@ -13,7 +13,7 @@ end
 
 monsters_levels = [1, 100, 1000, 10000, 100000]
 monsters_levels.each do |monster_level|
-  AchievementCategory.create(category: "monsters", level: monster_level)
+  AchievementCategory.create(category: "killed_monsters", level: monster_level)
 end
 
 ### CREATE USERS
@@ -27,9 +27,9 @@ users_names.each do |name|
   (1..50).each do |i|
     CollectedCoin.create(user: user, value: i * 1000)
   end
-  Achievement.create(user: user, category: 'monsters', level: 1)
-  Achievement.create(user: user, category: 'monsters', level: 100)
-  Achievement.create(user: user, category: 'monsters', level: 1000)
+  Achievement.create(user: user, category: 'killed_monsters', level: 1)
+  Achievement.create(user: user, category: 'killed_monsters', level: 100)
+  Achievement.create(user: user, category: 'killed_monsters', level: 1000)
   Achievement.create(user: user, category: 'coins', level: 1)
   Achievement.create(user: user, category: 'coins', level: 100)
   Achievement.create(user: user, category: 'coins', level: 1000)

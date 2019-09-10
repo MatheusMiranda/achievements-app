@@ -1,4 +1,4 @@
-class DeathsController < ApplicationController
+class Api::V1::DeathsController < ApplicationController
   before_action :set_death, only: [:show, :edit, :update, :destroy]
 
   # GET /deaths
@@ -25,6 +25,7 @@ class DeathsController < ApplicationController
   # POST /deaths.json
   def create
     @death = Death.new(death_params)
+    @user.update_achievements("deaths")
 
     respond_to do |format|
       if @death.save

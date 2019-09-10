@@ -1,4 +1,4 @@
-class AchievementCategoriesController < ApplicationController
+class Api::V1::AchievementCategoriesController < ApplicationController
   before_action :set_achievement_category, only: [:show, :edit, :update, :destroy]
 
   # GET /achievement_categories

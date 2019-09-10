@@ -1,4 +1,4 @@
-class KilledMonstersController < ApplicationController
+class Api::V1::KilledMonstersController < ApplicationController
   before_action :set_killed_monster, only: [:show, :edit, :update, :destroy]
 
   # GET /killed_monsters
