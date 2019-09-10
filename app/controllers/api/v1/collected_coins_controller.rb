@@ -26,7 +26,6 @@ class Api::V1::CollectedCoinsController < ApplicationController
   # POST /collected_coins.json
   def create
     @collected_coin = CollectedCoin.new(collected_coin_params)
-    @user.update_achievements("collected_coins")
 
     respond_to do |format|
       if @collected_coin.save

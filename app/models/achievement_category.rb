@@ -4,6 +4,7 @@ class AchievementCategory
 
   field :category, type: String
   field :level, type: Integer
+  validates_uniqueness_of :level
 
   searchkick
 

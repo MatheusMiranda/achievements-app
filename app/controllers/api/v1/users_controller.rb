@@ -4,12 +4,19 @@ class Api::V1::UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    users = User.all
+
+    users.each do |user|
+      user.update_all_achievements
+    end
+
+    render json: users.map{ |user| user.as_json }
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    render json: @user.as_json
   end
 
   # GET /users/new
@@ -28,11 +35,9 @@ class Api::V1::UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        render json: {status: 'SUCCESS', message:'Saved User', data: @user},status: :ok
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'User not saved!', data: @user.errors},status: :unprocessable_entity
       end
     end
   end
@@ -42,40 +47,23 @@ class Api::V1::UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
+        render json: @user, status: 200
       else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        render json: @user.errors, status: :unprocessable_entity
       end
     end
-  end
-
-  def update_collected_coins
-    @collected_coin = CollectedCoins.create(user_id: @user.id)
-  end
-
-  def update_killed_monsters
-    @killed_monster = KilledMonster.create(user_id: @user.id)
-  end
-
-  def update_deaths
-    @death = Death.create(user_id: @user.id)
-  end
-
-  # GET /users/:id/get_achievements
-  def get_achievements
-    @user.achievements
   end
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
     @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {status: 'SUCCESS', message:'Deleted User', data: @user},status: :ok
+  end
+
+  # GET /users/:id/get_achievements
+  def get_achievements
+    @user.achievements
   end
 
   private

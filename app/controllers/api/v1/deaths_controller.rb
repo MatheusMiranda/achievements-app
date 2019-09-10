@@ -25,7 +25,6 @@ class Api::V1::DeathsController < ApplicationController
   # POST /deaths.json
   def create
     @death = Death.new(death_params)
-    @user.update_achievements("deaths")
 
     respond_to do |format|
       if @death.save
