@@ -9,6 +9,8 @@ class AchievementCategory
 
   def search_data
     {
+      category: category,
+      level: level,
       created_at: created_at,
       updated_at: updated_at
     }
