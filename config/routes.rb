@@ -4,7 +4,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :killed_monsters
+      resources :killed_monsters, except: [:create]
+      post '/monster/:monster_id/user/:id', to: 'killed_monsters#create'
       resources :monsters
 
       resources :users do
