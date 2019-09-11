@@ -10,9 +10,9 @@ class Achievement
   def search_data
     {
       user_id: user.id.to_s,
-      level: category_achievement.level,
-      category: category_achievement.category,
-      type: category_achievement.type
+      level: achievement_category.level,
+      category: achievement_category.category,
+      type: achievement_category.type,
       created_at: created_at,
       updated_at: updated_at
     }
@@ -22,11 +22,9 @@ class Achievement
     {
       id: id,
       user_id: user.id,
-      level: category_achievement.level,
-      category: category_achievement.category,
-      type: category_achievement.type
-      level: level,
-      category: category
+      level: achievement_category.level,
+      category: achievement_category.category,
+      type: achievement_category.type
     }
   end
 end

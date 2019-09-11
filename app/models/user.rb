@@ -30,33 +30,34 @@ class User
 
   def update_all_achievements
     update_achievements("deaths")
-    update_achievements("killed_monsters")
     update_achievements("collected_coins")
+    update_achievements("killed_monsters", "bowsers")
+    update_achievements("killed_monsters", "turtles")
   end
 
   private
-    def update_achievements(item)
-      achievements = Achievement.search id.to_s, fields: [:user_id], order: {created_at: :desc}, where: {category: item}
+    def update_achievements(category, type=nil)
+      achievements = Achievement.search id.to_s, fields: [:user_id], order: {created_at: :desc}, where: {category: category, type: type}
 
       if not achievements.empty?
         last_achievement_level = achievements.first.level
-        value = get_total_value(item)
+        value = get_total_value(category, type)
 
-        new_achievements = AchievementCategory.search item, fields: [:category], where: {level: {gt: last_achievement_level, lt: value + 1}}
+        new_achievements = AchievementCategory.search category, fields: [:category], where: {level: {gt: last_achievement_level, lt: value + 1}, type: type}
 
-        new_achievements.each do |new_achievement|
-          Achievement.create(user: self, category: new_achievement.category, level: new_achievement.level)
+        new_achievements.each do |achievement_category|
+          Achievement.create(user: self, achievement_category: achievement_category)
         end
       end
     end
 
-    def get_total_value(item)
+    def get_total_value(category, type=nil)
       value = 0
-      if item == "deaths"
+      if category == "deaths"
         value = get_deaths_quantity
-      elsif item == "killed_monsters"
-        value = get_killed_monsters_quantity
-      elsif item == "collected_coins"
+      elsif category == "killed_monsters"
+        value = get_killed_monsters_quantity(type)
+      elsif category == "collected_coins"
         value = get_collected_coins_total
       end
       value
@@ -67,8 +68,8 @@ class User
       results.size
     end
 
-    def get_killed_monsters_quantity
-      results = KilledMonster.search id.to_s, fields: [:user_id]
+    def get_killed_monsters_quantity(monsters_type)
+      results = KilledMonster.search id.to_s, fields: [:user_id], where: {name: monsters_type}
       results.size
     end
 
