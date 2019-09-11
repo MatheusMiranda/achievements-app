@@ -15,4 +15,12 @@ class KilledMonster
       updated_at: updated_at
     }
   end
+
+  def as_json(_opts = {})
+    {
+      id: id,
+      user_id: user.id,
+      monster_id: monster.id
+    }
+  end
 end

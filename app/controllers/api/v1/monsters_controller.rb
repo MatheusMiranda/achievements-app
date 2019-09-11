@@ -4,12 +4,13 @@ class Api::V1::MonstersController < ApplicationController
   # GET /monsters
   # GET /monsters.json
   def index
-    @monsters = Monster.all
+    render json: Monster.all.map{ |monster| monster.as_json }
   end
 
   # GET /monsters/1
   # GET /monsters/1.json
   def show
+    render json: @monster.as_json
   end
 
   # GET /monsters/new
@@ -28,11 +29,9 @@ class Api::V1::MonstersController < ApplicationController
 
     respond_to do |format|
       if @monster.save
-        format.html { redirect_to @monster, notice: 'Monster was successfully created.' }
-        format.json { render :show, status: :created, location: @monster }
+        render json: {status: 'SUCCESS', message:'Saved Monster', data: @monster},status: :ok
       else
-        format.html { render :new }
-        format.json { render json: @monster.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'Monster not saved!', data: @monster.errors},status: :unprocessable_entity
       end
     end
   end
@@ -41,12 +40,10 @@ class Api::V1::MonstersController < ApplicationController
   # PATCH/PUT /monsters/1.json
   def update
     respond_to do |format|
-      if @monster.update(monster_params)
-        format.html { redirect_to @monster, notice: 'Monster was successfully updated.' }
-        format.json { render :show, status: :ok, location: @monster }
+      if @monster.save
+        render json: {status: 'SUCCESS', message:'Saved Monster', data: @monster},status: :ok
       else
-        format.html { render :edit }
-        format.json { render json: @monster.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'Monster not saved!', data: @monster.errors},status: :unprocessable_entity
       end
     end
   end
@@ -55,10 +52,7 @@ class Api::V1::MonstersController < ApplicationController
   # DELETE /monsters/1.json
   def destroy
     @monster.destroy
-    respond_to do |format|
-      format.html { redirect_to monsters_url, notice: 'Monster was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {status: 'SUCCESS', message:'Deleted Monster', data: @monster},status: :ok
   end
 
   private

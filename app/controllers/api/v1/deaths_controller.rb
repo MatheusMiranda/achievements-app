@@ -4,12 +4,13 @@ class Api::V1::DeathsController < ApplicationController
   # GET /deaths
   # GET /deaths.json
   def index
-    @deaths = Death.all
+    render json: Death.all.map{ |death| death.as_json }
   end
 
   # GET /deaths/1
   # GET /deaths/1.json
   def show
+    render json: @death.as_json
   end
 
   # GET /deaths/new
@@ -28,11 +29,9 @@ class Api::V1::DeathsController < ApplicationController
 
     respond_to do |format|
       if @death.save
-        format.html { redirect_to @death, notice: 'Death was successfully created.' }
-        format.json { render :show, status: :created, location: @death }
+        render json: {status: 'SUCCESS', message:'Saved Death', data: @death},status: :ok
       else
-        format.html { render :new }
-        format.json { render json: @death.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'Death not saved!', data: @death.errors},status: :unprocessable_entity
       end
     end
   end
@@ -42,11 +41,9 @@ class Api::V1::DeathsController < ApplicationController
   def update
     respond_to do |format|
       if @death.update(death_params)
-        format.html { redirect_to @death, notice: 'Death was successfully updated.' }
-        format.json { render :show, status: :ok, location: @death }
+        render json: @death, status: 200
       else
-        format.html { render :edit }
-        format.json { render json: @death.errors, status: :unprocessable_entity }
+        render json: @death.errors, status: :unprocessable_entity
       end
     end
   end
@@ -55,10 +52,7 @@ class Api::V1::DeathsController < ApplicationController
   # DELETE /deaths/1.json
   def destroy
     @death.destroy
-    respond_to do |format|
-      format.html { redirect_to deaths_url, notice: 'Death was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {status: 'SUCCESS', message:'Deleted Death', data: @death},status: :ok
   end
 
   private

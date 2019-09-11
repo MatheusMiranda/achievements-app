@@ -5,12 +5,13 @@ class Api::V1::CollectedCoinsController < ApplicationController
   # GET /collected_coins
   # GET /collected_coins.json
   def index
-    @collected_coins = CollectedCoin.all
+    render json: CollectedCoin.all.map{ |collected_coin| collected_coin.as_json }
   end
 
   # GET /collected_coins/1
   # GET /collected_coins/1.json
   def show
+    render json: @collected_coin.as_json
   end
 
   # GET /collected_coins/new
@@ -29,11 +30,9 @@ class Api::V1::CollectedCoinsController < ApplicationController
 
     respond_to do |format|
       if @collected_coin.save
-        format.html { redirect_to @collected_coin, notice: 'Collected coin was successfully created.' }
-        format.json { render :show, status: :created, location: @collected_coin }
+        render json: {status: 'SUCCESS', message:'Saved Collected Coin', data: @collected_coin},status: :ok
       else
-        format.html { render :new }
-        format.json { render json: @collected_coin.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'Collected Coin not saved!', data: @collected_coin.errors},status: :unprocessable_entity
       end
     end
   end
@@ -43,11 +42,9 @@ class Api::V1::CollectedCoinsController < ApplicationController
   def update
     respond_to do |format|
       if @collected_coin.update(collected_coin_params)
-        format.html { redirect_to @collected_coin, notice: 'Collected coin was successfully updated.' }
-        format.json { render :show, status: :ok, location: @collected_coin }
+        render json: @collected_coin, status: 200
       else
-        format.html { render :edit }
-        format.json { render json: @collected_coin.errors, status: :unprocessable_entity }
+        render json: @collected_coin.errors, status: :unprocessable_entity
       end
     end
   end
@@ -56,10 +53,7 @@ class Api::V1::CollectedCoinsController < ApplicationController
   # DELETE /collected_coins/1.json
   def destroy
     @collected_coin.destroy
-    respond_to do |format|
-      format.html { redirect_to collected_coins_url, notice: 'Collected coin was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {status: 'SUCCESS', message:'Deleted Collected Coin', data: @collected_coin},status: :ok
   end
 
   private
@@ -72,7 +66,7 @@ class Api::V1::CollectedCoinsController < ApplicationController
     def collected_coin_params
       params.require(:collected_coin).permit(:value, :user_id)
     end
-    
+
     def set_user
       @user = User.find(params[:user_id])
     end

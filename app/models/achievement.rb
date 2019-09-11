@@ -17,4 +17,13 @@ class Achievement
       updated_at: updated_at
     }
   end
+
+  def as_json(_opts = {})
+    {
+      id: id,
+      user_id: user.id,
+      level: level,
+      category: category
+    }
+  end
 end

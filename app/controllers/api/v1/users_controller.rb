@@ -61,11 +61,6 @@ class Api::V1::UsersController < ApplicationController
     render json: {status: 'SUCCESS', message:'Deleted User', data: @user},status: :ok
   end
 
-  # GET /users/:id/get_achievements
-  def get_achievements
-    @user.achievements
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

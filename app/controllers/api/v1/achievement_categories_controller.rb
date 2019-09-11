@@ -5,11 +5,13 @@ class Api::V1::AchievementCategoriesController < ApplicationController
   # GET /achievement_categories.json
   def index
     @achievement_categories = AchievementCategory.all
+    render json: AchievementCategory.all.map{ |achievement_category| achievement_category.as_json }
   end
 
   # GET /achievement_categories/1
   # GET /achievement_categories/1.json
   def show
+    render json: @achievement_category.as_json
   end
 
   # GET /achievement_categories/new
@@ -28,11 +30,9 @@ class Api::V1::AchievementCategoriesController < ApplicationController
 
     respond_to do |format|
       if @achievement_category.save
-        format.html { redirect_to @achievement_category, notice: 'Achievement category was successfully created.' }
-        format.json { render :show, status: :created, location: @achievement_category }
+        render json: {status: 'SUCCESS', message:'Saved Achievement Category', data: @achievement_category},status: :ok
       else
-        format.html { render :new }
-        format.json { render json: @achievement_category.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'Achievement Category not saved!', data: @achievement_category.errors},status: :unprocessable_entity
       end
     end
   end
@@ -42,11 +42,9 @@ class Api::V1::AchievementCategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @achievement_category.update(achievement_category_params)
-        format.html { redirect_to @achievement_category, notice: 'Achievement category was successfully updated.' }
-        format.json { render :show, status: :ok, location: @achievement_category }
+        render json: @achievement_category, status: 200
       else
-        format.html { render :edit }
-        format.json { render json: @achievement_category.errors, status: :unprocessable_entity }
+        render json: @achievement_category.errors, status: :unprocessable_entity
       end
     end
   end
@@ -55,10 +53,7 @@ class Api::V1::AchievementCategoriesController < ApplicationController
   # DELETE /achievement_categories/1.json
   def destroy
     @achievement_category.destroy
-    respond_to do |format|
-      format.html { redirect_to achievement_categories_url, notice: 'Achievement category was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {status: 'SUCCESS', message:'Deleted Achievement Category', data: @achievement_category},status: :ok
   end
 
   private

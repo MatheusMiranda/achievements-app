@@ -16,4 +16,12 @@ class CollectedCoin
       updated_at: updated_at
     }
   end
+
+  def as_json(_opts = {})
+    {
+      id: id,
+      value: value,
+      user_id: user.id
+    }
+  end
 end

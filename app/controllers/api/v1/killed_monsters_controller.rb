@@ -4,12 +4,13 @@ class Api::V1::KilledMonstersController < ApplicationController
   # GET /killed_monsters
   # GET /killed_monsters.json
   def index
-    @killed_monsters = KilledMonster.all
+    render json: KilledMonster.all.map{ |killed_monsters| killed_monster.as_json }
   end
 
   # GET /killed_monsters/1
   # GET /killed_monsters/1.json
   def show
+    render json: @killed_monster.as_json
   end
 
   # GET /killed_monsters/new
@@ -28,11 +29,9 @@ class Api::V1::KilledMonstersController < ApplicationController
 
     respond_to do |format|
       if @killed_monster.save
-        format.html { redirect_to @killed_monster, notice: 'Killed monster was successfully created.' }
-        format.json { render :show, status: :created, location: @killed_monster }
+        render json: {status: 'SUCCESS', message:'Saved Killed Monster', data: @killed_monster},status: :ok
       else
-        format.html { render :new }
-        format.json { render json: @killed_monster.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'Killed Monster not saved!', data: @killed_monster.errors},status: :unprocessable_entity
       end
     end
   end
@@ -42,11 +41,9 @@ class Api::V1::KilledMonstersController < ApplicationController
   def update
     respond_to do |format|
       if @killed_monster.update(killed_monster_params)
-        format.html { redirect_to @killed_monster, notice: 'Killed monster was successfully updated.' }
-        format.json { render :show, status: :ok, location: @killed_monster }
+        render json: @killed_monster, status: 200
       else
-        format.html { render :edit }
-        format.json { render json: @killed_monster.errors, status: :unprocessable_entity }
+        render json: @killed_monster.errors, status: :unprocessable_entity
       end
     end
   end
@@ -55,10 +52,7 @@ class Api::V1::KilledMonstersController < ApplicationController
   # DELETE /killed_monsters/1.json
   def destroy
     @killed_monster.destroy
-    respond_to do |format|
-      format.html { redirect_to killed_monsters_url, notice: 'Killed monster was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {status: 'SUCCESS', message:'Deleted Killed Monster', data: @killed_monster},status: :ok
   end
 
   private

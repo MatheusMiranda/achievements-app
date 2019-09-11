@@ -3,7 +3,7 @@ class Monster
   include Mongoid::Timestamps
 
   field :name, type: String
-  has_many :killed_monsters
+  has_one :killed_monsters
 
   searchkick
 
@@ -12,6 +12,13 @@ class Monster
       name: name,
       created_at: created_at,
       updated_at: updated_at
+    }
+  end
+
+  def as_json(_opts = {})
+    {
+      id: id,
+      name: name
     }
   end
 end

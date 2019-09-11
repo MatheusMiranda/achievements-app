@@ -4,12 +4,13 @@ class Api::V1::AchievementsController < ApplicationController
   # GET /achievements
   # GET /achievements.json
   def index
-    @achievements = Achievement.all
+    render json: Achievement.map{ |achievement| achievement.as_json }
   end
 
   # GET /achievements/1
   # GET /achievements/1.json
   def show
+    render json: @achievement.as_json
   end
 
   # GET /achievements/new
@@ -28,11 +29,9 @@ class Api::V1::AchievementsController < ApplicationController
 
     respond_to do |format|
       if @achievement.save
-        format.html { redirect_to @achievement, notice: 'Achievement was successfully created.' }
-        format.json { render :show, status: :created, location: @achievement }
+        render json: {status: 'SUCCESS', message:'Saved Achievement', data: @achievement},status: :ok
       else
-        format.html { render :new }
-        format.json { render json: @achievement.errors, status: :unprocessable_entity }
+        render json: {status: 'ERROR', message:'Achievement not saved!', data: @achievement.errors},status: :unprocessable_entity
       end
     end
   end
@@ -42,11 +41,9 @@ class Api::V1::AchievementsController < ApplicationController
   def update
     respond_to do |format|
       if @achievement.update(achievement_params)
-        format.html { redirect_to @achievement, notice: 'Achievement was successfully updated.' }
-        format.json { render :show, status: :ok, location: @achievement }
+        render json: @achievement, status: 200
       else
-        format.html { render :edit }
-        format.json { render json: @achievement.errors, status: :unprocessable_entity }
+        render json: @achievement.errors, status: :unprocessable_entity
       end
     end
   end
@@ -55,10 +52,7 @@ class Api::V1::AchievementsController < ApplicationController
   # DELETE /achievements/1.json
   def destroy
     @achievement.destroy
-    respond_to do |format|
-      format.html { redirect_to achievements_url, notice: 'Achievement was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {status: 'SUCCESS', message:'Deleted Achievement', data: @achievement},status: :ok
   end
 
   private
