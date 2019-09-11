@@ -3,15 +3,19 @@ class AchievementCategory
   include Mongoid::Timestamps
 
   field :category, type: String
+  field :type, type: String
   field :level, type: Integer
   validates_uniqueness_of :level
+
+  belongs_to :achievement
 
   searchkick
 
   def search_data
     {
-      category: category,
       level: level,
+      category: category,
+      type: type,
       created_at: created_at,
       updated_at: updated_at
     }
@@ -21,7 +25,8 @@ class AchievementCategory
     {
       id: id,
       level: level,
-      category: category
+      category: category,
+      type: type
     }
   end
 end
