@@ -19,6 +19,9 @@ end
 ### CREATE USERS
 User.reindex
 Achievement.reindex
+CollectedCoin.reindex
+Death.reindex
+
 puts "CREATING USERS"
 users_names = ["Guila", "Bruna", "Taynara","Miranda", "Joao", "Assis", "Dom", "Richard", "Kamilla", "Vitoria"]
 
@@ -26,6 +29,9 @@ users_names.each do |name|
   user = User.create(name: name)
   (1..50).each do |i|
     CollectedCoin.create(user: user, value: i * 1000)
+  end
+  (1..50).each do |i|
+    Death.create(user: user)
   end
   Achievement.create(user: user, category: 'killed_monsters', level: 1)
   Achievement.create(user: user, category: 'killed_monsters', level: 100)
