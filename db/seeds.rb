@@ -3,7 +3,7 @@ puts "CREATING ACHIEVEMENTS CATEGORIES"
 AchievementCategory.reindex
 coins_levels = [1, 100, 1000, 10000, 100000]
 coins_levels.each do |coin_level|
-  AchievementCategory.create(category: "coins", level: coin_level)
+  AchievementCategory.create(category: "collected_coins", level: coin_level)
 end
 
 deaths_levels = [1, 10, 25, 50, 100]
@@ -30,9 +30,9 @@ users_names.each do |name|
   Achievement.create(user: user, category: 'killed_monsters', level: 1)
   Achievement.create(user: user, category: 'killed_monsters', level: 100)
   Achievement.create(user: user, category: 'killed_monsters', level: 1000)
-  Achievement.create(user: user, category: 'coins', level: 1)
-  Achievement.create(user: user, category: 'coins', level: 100)
-  Achievement.create(user: user, category: 'coins', level: 1000)
+  Achievement.create(user: user, category: 'collected_coins', level: 1)
+  Achievement.create(user: user, category: 'collected_coins', level: 100)
+  Achievement.create(user: user, category: 'collected_coins', level: 1000)
   Achievement.create(user: user, category: 'deaths', level: 1)
   Achievement.create(user: user, category: 'deaths', level: 10)
   Achievement.create(user: user, category: 'deaths', level: 25)
@@ -57,5 +57,3 @@ KilledMonster.reindex
 monsters.each do |monster|
   KilledMonster.create(user: users[rand(1..users_count)], monster: monster)
 end
-
-

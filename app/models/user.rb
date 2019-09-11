@@ -37,13 +37,16 @@ class User
   private
     def update_achievements(item)
       achievements = Achievement.search id.to_s, fields: [:user_id], order: {created_at: :desc}, where: {category: item}
-      last_achievement_level = achievements.first.level
-      value = get_total_value(item)
 
-      new_achievements = AchievementCategory.search item, fields: [:category], where: {level: {gt: last_achievement_level, lt: value + 1}}
+      if not achievements.empty?
+        last_achievement_level = achievements.first.level
+        value = get_total_value(item)
 
-      new_achievements.each do |new_achievement|
-        Achievement.create(user: self, category: new_achievement.category, level: new_achievement.level)
+        new_achievements = AchievementCategory.search item, fields: [:category], where: {level: {gt: last_achievement_level, lt: value + 1}}
+
+        new_achievements.each do |new_achievement|
+          Achievement.create(user: self, category: new_achievement.category, level: new_achievement.level)
+        end
       end
     end
 
@@ -60,17 +63,17 @@ class User
     end
 
     def get_deaths_quantity
-      results = Death.search User.first.id.to_s, fields: [:user_id]
+      results = Death.search id.to_s, fields: [:user_id]
       results.size
     end
 
     def get_killed_monsters_quantity
-      results = KilledMonster.search User.first.id.to_s, fields: [:user_id]
+      results = KilledMonster.search id.to_s, fields: [:user_id]
       results.size
     end
 
     def get_collected_coins_total
-      results = CollectedCoin.search selft.id.to_s, fields: [:user_id], aggs: {sum_value: {sum: {field: :value}}}
-      results["sum_value"]
+      results = CollectedCoin.search id.to_s, fields: [:user_id], aggs: {sum_value: {sum: {field: :value}}}
+      results.aggs["sum_value"]["value"]
     end
 end
