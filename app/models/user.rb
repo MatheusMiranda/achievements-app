@@ -31,8 +31,8 @@ class User
   def update_all_achievements
     update_achievements("deaths")
     update_achievements("collected_coins")
-    update_achievements("killed_monsters", "bowsers")
-    update_achievements("killed_monsters", "turtles")
+    update_achievements("killed_monsters", "bowser")
+    update_achievements("killed_monsters", "turtle")
   end
 
   private
@@ -70,7 +70,7 @@ class User
     end
 
     def get_killed_monsters_quantity(monsters_type)
-      results = KilledMonster.search id.to_s, fields: [:user_id], where: {name: monsters_type}
+      results = KilledMonster.search id.to_s, fields: [:user_id], where: {monster_type: monsters_type}
       results.size
     end
 
