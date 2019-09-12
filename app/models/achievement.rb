@@ -3,28 +3,31 @@ class Achievement
   include Mongoid::Timestamps
 
   belongs_to :user
-  has_one :achievement_category
+
+  field :category, type: String
+  field :type, type: String
+  field :level, type: Integer
 
   searchkick
 
-  def search_data
-    {
-      user_id: user.id.to_s,
-      level: achievement_category.level,
-      category: achievement_category.category,
-      type: achievement_category.type,
-      created_at: created_at,
-      updated_at: updated_at
-    }
-  end
+ def search_data
+   {
+     user_id: user.id.to_s,
+     level: level,
+     category: category,
+     type: type,
+     created_at: created_at,
+     updated_at: updated_at
+   }
+ end
 
   def as_json(_opts = {})
     {
       id: id,
       user_id: user.id,
-      level: achievement_category.level,
-      category: achievement_category.category,
-      type: achievement_category.type
+      level: level,
+      category: category,
+      type: type
     }
   end
 end

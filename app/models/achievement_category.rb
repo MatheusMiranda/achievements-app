@@ -5,9 +5,6 @@ class AchievementCategory
   field :category, type: String
   field :type, type: String
   field :level, type: Integer
-  validates_uniqueness_of :level
-
-  belongs_to :achievement
 
   searchkick
 

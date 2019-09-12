@@ -37,17 +37,18 @@ class User
 
   private
     def update_achievements(category, type=nil)
-      achievements = Achievement.search id.to_s, fields: [:user_id], order: {created_at: :desc}, where: {category: category, type: type}
+      last_achievement_level = 0
+      value = get_total_value(category, type)
 
+      achievements = Achievement.search id.to_s, fields: [:user_id], order: {created_at: :desc}, where: {category: category, type: type}
       if not achievements.empty?
         last_achievement_level = achievements.first.level
-        value = get_total_value(category, type)
+      end
 
-        new_achievements = AchievementCategory.search category, fields: [:category], where: {level: {gt: last_achievement_level, lt: value + 1}, type: type}
+      new_achievements = AchievementCategory.search category, fields: [:category], where: {level: {gt: last_achievement_level, lt: value + 1}, type: type}
 
-        new_achievements.each do |achievement_category|
-          Achievement.create(user: self, achievement_category: achievement_category)
-        end
+      new_achievements.each do |new_achievement|
+        Achievement.create(user: self, level: new_achievement.level, category: new_achievement.category, type: new_achievement.type)
       end
     end
 
