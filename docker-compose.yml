@@ -2,15 +2,18 @@ version: '2'
 
 services:
   rails:
-    image: matheusmiranda/pokedez:latest
     build:
       context: .
       dockerfile: ./docker/rails-server/Dockerfile
     ports:
-      - 3001:3000
+      - 3000:3000
     command: bash -c "rm -rf tmp/ && bundle exec rails s -b 0.0.0.0"
     volumes:
       - .:/app
+    depends_on:
+      - mongo
+    environment:
+      - ELASTICSEARCH_URL=elasticsearch:9200
 
   mongo:
     image: mongo:3.2
@@ -29,14 +32,3 @@ services:
       - 9300:9300
     environment:
       - discovery.type=single-node
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:6.4.2
-    restart: unless-stopped
-    ports:
-      - 5601:5601
-    environment:
-      - SERVER_PORT=5601
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
