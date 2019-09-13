@@ -1,24 +1,23 @@
-# README
+# Achievements App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Run with docker
 
-Things you may want to cover:
+To run with docker you need first to start the *ElasticSearch* service.
+```sh
+sudo docker-compose up -d elasticsearch
+```
 
-* Ruby version
+The database can be populated by running the seeds.
+```sh
+sudo docker-compose run rails-server rake db:seed
+```
 
-* System dependencies
+After running it you need to wait for the database to be populated.
 
-* Configuration
+Next, start rails and mongo services using the following command:
 
-* Database creation
+```sh
+sudo docker-compose up -d rails
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Wait for the *Rails* service finish starting. After it, you can access it at your browser on `localhost:3000`.
